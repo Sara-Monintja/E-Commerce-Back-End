@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   // be sure to include its associated Category and Tag data 
   // (attributes: id, name, price, stock, category_id)
 
-  Product.finAll({
+  Product.findAll({
     attributes: ["id", "product_name", "price", "stock", "category_id"],
     include: [
       { 
@@ -19,6 +19,7 @@ router.get('/', (req, res) => {
       {
         model: Tag,
         attributes: ["id", "tag_name"],
+        through: "ProductTag",
       }
     ]
   }).then((productData) => {
@@ -31,8 +32,25 @@ router.get('/', (req, res) => {
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id`
+  // find a single product by its `id` --- findByPk
   // be sure to include its associated Category and Tag data
+  Product.findByPk(req.params.id, {
+    include: [
+      {
+        model: Category,
+        attributes: ["id", "category_name"]
+      },
+      {
+        model: Tag,
+        attributes: ["id", "tag_name"],
+        through: "ProductTag",
+      }
+    ]
+  }).then((specificProduct) => {
+    res.json(specificProduct);
+  }).catch((err) => {
+    res.json(err);
+  });
 });
 
 // create new product
