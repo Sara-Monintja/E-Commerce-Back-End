@@ -130,7 +130,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value --- do this with findByPk -- destroy=delete
 
-  let deletedProduce = Product.findByPk(req.params.id);
+  let deletedProduct = Product.findByPk(req.params.id);
   Product.destroy({
     where: {
       id: req.params.id,
